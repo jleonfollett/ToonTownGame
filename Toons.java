@@ -38,25 +38,20 @@ public class Toons {
 	color toonColor;
 	Map<Gags, Integer> gagBag = new HashMap<Gags, Integer>();
 	 
-	public Toons(toonType species, color toonColor){
-		this.toonColor = toonColor;
-		this.species = species;
-		this.maxLaff = 15;
-		this.currentLaff = this.maxLaff;
-		this.throwEXP = 0;
-		this.squirtEXP = 0;
-	}
-	
-	public void makeToons(){
+	public Toons(){
 		@SuppressWarnings("resource")
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("Please choose a name");
 		this.setName(scanner.nextLine());
 		System.out.println("Please pick a toon type.");
-		this.setSpecies(toonType.valueOf(scanner.nextLine()));
-		this.setName(scanner.nextLine());
+		String typeString = scanner.nextLine();
+		this.setSpecies(toonType.valueOf(typeString.toUpperCase()));
 		System.out.println("Please pick a color.");
-		this.setToonColor(color.valueOf(scanner.nextLine()));
+		String colorString = scanner.nextLine();
+		this.setToonColor(color.valueOf(colorString.toUpperCase()));
+		this.setMaxLaff(15);
+		this.setThrowEXP(0);
+		this.setSquirtEXP(0);
 	}
 	
 	public Map<Gags, Integer> getGagBag() {
@@ -77,6 +72,7 @@ public class Toons {
 
 	public void setMaxLaff(int maxLaff) {
 		this.maxLaff = maxLaff;
+		this.setCurrentLaff(maxLaff);
 	}
 
 	public void setThrowEXP(int throwEXP) {
