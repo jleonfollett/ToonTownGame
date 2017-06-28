@@ -1,7 +1,5 @@
 package john;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Map;
 import java.util.Random;
 
@@ -15,9 +13,10 @@ public class Lawbot extends Cog{
 		makeLawbotMap();
 		determinePossibleCogs(level);
 		getLawbot();
-		setCurrentHealth();
+		System.out.println("You have encountered: \n");
 		System.out.println(this.getName());
 		System.out.println(this.getSuit());
+		System.out.println(this.getLevel());
 	}
 	
 	public void makeLawbotMap(){

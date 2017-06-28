@@ -1,14 +1,11 @@
 package john;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Map;
 import java.util.Random;
 
 public class Bossbot extends Cog{
 	Random rng = new Random();
 	
-	private String name;
 	
 	Map<Integer, String> bossbotLevelToCog = Cog.levelToCog;
 
@@ -17,9 +14,10 @@ public class Bossbot extends Cog{
 		makeBossbotMap();
 		determinePossibleCogs(level);
 		getBossbot();
-		setCurrentHealth();
+		System.out.println("You have encountered: \n");
 		System.out.println(this.getName());
 		System.out.println(this.getSuit());
+		System.out.println(this.getLevel());
 	}
 	
 	public void makeBossbotMap(){

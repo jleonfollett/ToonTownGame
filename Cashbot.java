@@ -1,15 +1,11 @@
 package john;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Map;
 import java.util.Random;
 
 public class Cashbot extends Cog{
 	Random rng = new Random();
-	
-	private String name;
-	
+		
 	Map<Integer, String> cashbotLevelToCog = Cog.levelToCog;
 
 	Cashbot(int level){
@@ -17,9 +13,10 @@ public class Cashbot extends Cog{
 		makeCashbotMap();
 		determinePossibleCogs(level);
 		getCashbot();
-		setCurrentHealth();
+		System.out.println("You have encountered: \n");
 		System.out.println(this.getName());
 		System.out.println(this.getSuit());
+		System.out.println(this.getLevel());
 	}
 	
 	public void makeCashbotMap(){

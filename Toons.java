@@ -1,10 +1,12 @@
 package john;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
 public class Toons {
+	// What species is the toon
 	public enum toonType {
 		MONKEY,
 		BEAR,
@@ -16,6 +18,7 @@ public class Toons {
 		RABBIT,
 		HORSE
 	}
+	// What color is the toon
 	public enum color {
 		BLUE,
 		RED,
@@ -25,26 +28,42 @@ public class Toons {
 		PURPLE,
 		ORANGE
 	}
-	String name;
-	public void setName(String name) {
-		this.name = name;
+	// What Track the gag is a part of
+	private static enum gagTrack{
+		THROW,
+		SQUIRT
 	}
-
+	private String name;
 	int currentLaff;
 	int maxLaff;
 	int throwEXP;
 	int squirtEXP;
 	toonType species;
 	color toonColor;
+	// List of throw gags
+	ArrayList<Gags> throwGags = new ArrayList<Gags>();
+	// List of squirt gags
+	ArrayList<Gags> squirtGags = new ArrayList<Gags>();
+	// Object containing gags and amount of each
 	Map<Gags, Integer> gagBag = new HashMap<Gags, Integer>();
+	// Mapping all gags to the track
+	Map<gagTrack, ArrayList<Gags>> gagsInTrack = new HashMap<gagTrack, ArrayList<Gags>>();
 	 
-	public Toons(){
+	Toons(){
+		buildToon();
+		buildGags();
+
+	}
+	public void pickGags(){
+		
+	}
+	// Gives starting gags
+	public void buildGags(){
+		startingGags();
+		}
+	// Sets basic toon attributes based on user input
+	public void buildToon(){
 		@SuppressWarnings("resource")
-		Throw cupcake = new Throw("Cupcake", 6, 1, 75, 10);
-		Squirt flower = new Squirt("Squirting Flower", 4, 1, 95, 10);
-		gagBag.put(cupcake, cupcake.getAmount());
-		gagBag.put(flower, cupcake.getAmount());
-		displayGags();
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("Please choose a name");
 		this.setName(scanner.nextLine());
@@ -58,37 +77,44 @@ public class Toons {
 		this.setThrowEXP(0);
 		this.setSquirtEXP(0);
 	}
-	
+	// Displays gags based on what is held in gagBag
 	public void displayGags(){
-		for (Map.Entry<Gags, Integer> gagBag : gagBag.entrySet()) {
-		    String key = gagBag.getKey().getName();
-		    Object value = gagBag.getValue();
-		    System.out.println(key + "-" + value);
-		    // ...
+		System.out.println("Your have:");
+		System.out.println("\n--THROW--");
+		for (Gags gag : throwGags){
+			System.out.println(gag.getName() + "-" + gag.getAmount());
 		}
+		System.out.println("\n--SQUIRT--");
+		for (Gags gag : squirtGags){
+			System.out.println(gag.getName() + "-" + gag.getAmount());
+		}
+		
 	}
-	
+	// Adds default gags (Cupcake and flower)
+	public void startingGags(){
+		Throw cupcake   =   new Throw("Cupcake", 6, 1, 75, 10, 1);
+		Squirt flower   =   new Squirt("Squirting Flower", 4, 1, 95, 10, 1);
+		gagBag.put(cupcake, cupcake.getAmount());
+		gagBag.put(flower, cupcake.getAmount());
+		throwGags.add(cupcake);
+		squirtGags.add(flower);
+		gagsInTrack.put(gagTrack.THROW, throwGags);
+		gagsInTrack.put(gagTrack.SQUIRT, squirtGags);
+		}
+	// Has toon pick a gag and returns it
 	public Gags pickGag(){
+		displayGags();
 		Gags usedGag = null;
 		System.out.println("Please pick a gag");
-		for (Gags key : gagBag.keySet()) {
-			System.out.println(key.getName() + "-" + gagBag.get(key));
-		}
-		Scanner gagPick = new Scanner(System.in);
-		String userInput = gagPick.nextLine();
-		String formattedInput = userInput.substring(0,1).toUpperCase() + userInput.substring(1).toLowerCase(); 
-		for (Gags key : gagBag.keySet()){
-			if (key.equals(formattedInput)){
-				usedGag = key;
-					}
-				else {
-					pickGag();
-				}
-			}
+		@SuppressWarnings("resource")
+		Scanner gagPick       =    new Scanner(System.in);
+		String userInput      =    gagPick.nextLine();
+		String formattedInput =    userInput.substring(0,1).toUpperCase() + userInput.substring(1).toLowerCase(); 
+		usedGag = matchGag(formattedInput);
 		return usedGag;
 		}
 	
-
+	// Setters and getters
 	public Map<Gags, Integer> getGagBag() {
 		return gagBag;
 	}
@@ -100,7 +126,8 @@ public class Toons {
 	public String getName() {
 		return name;
 	}
-
+	
+	
 	public void setCurrentLaff(int currentLaff) {
 		this.currentLaff = currentLaff;
 	}
@@ -125,7 +152,9 @@ public class Toons {
 	public void setToonColor(color toonColor) {
 		this.toonColor = toonColor;
 	}
-
+	public void takeDamage(int damage){
+		this.setCurrentLaff(getCurrentLaff() - damage);
+	}
 	public int getCurrentLaff() {
 		return currentLaff;
 	}
@@ -145,8 +174,29 @@ public class Toons {
 	public toonType getSpecies() {
 		return species;
 	}
+	
+	public Gags matchGag(String input){
+		Gags matchedGag = null;
+		for (Gags gag : throwGags){
+				if (gag.getName().equals(input)){
+					matchedGag = gag;
+				}
+			}
+		
+		for (Gags gag : squirtGags){
+				if (gag.getName().equals(input)){
+					matchedGag = gag;
+				}
+			}
+		return matchedGag;
+
+		}
+	
 
 	public color getToonColor() {
 		return toonColor;
+	}
+	public void setName(String name) {
+		this.name = name;
 	}
 }

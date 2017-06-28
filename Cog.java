@@ -10,6 +10,7 @@ public abstract class Cog {
 	Random rng = new Random();
 	private int totalHealth;
 	private int currentHealth;
+	private int accuracy;
 	// Actual level
 	private int level;
 	private int[] seriesLevel = new int[8];
@@ -44,12 +45,21 @@ public abstract class Cog {
 		
 	}
 	
+	public void takeDamage(Gags gag){
+		this.setCurrentHealth(this.getCurrentHealth() - gag.getDamage());
 		
+	}
 		
 	
+	
+
+
 	static private ArrayList<Integer> possibleCogs = new ArrayList<Integer>();
 
 	public void determinePossibleCogs(int level){
+		this.setLevel(level);
+		this.setAccuracy();
+		setHealth();
 		if(LevelIndexes.get(0).contains(level)){
 			possibleCogs.add(1);
 		}
@@ -75,7 +85,10 @@ public abstract class Cog {
 			possibleCogs.add(8);
 		}
 	}
-	
+	public int doDamage(){
+		int damage = getLevel() * 2;
+		return damage;
+	}
 	public static ArrayList<Integer> getPossibleCogs() {
 		return possibleCogs;
 	}
@@ -86,12 +99,14 @@ public abstract class Cog {
 	public void setTotalHealth(int totalHealth) {
 		this.totalHealth = totalHealth;
 	}
+	public void setHealth(){
+		this.currentHealth = (getLevel() + 1) * (getLevel() + 2);
+		this.totalHealth = this.getCurrentHealth();
+	}
 	public int getCurrentHealth() {
 		return currentHealth;
 	}
-	public void setCurrentHealth() {
-		this.currentHealth = (getLevel() + 1) * (getLevel() * 2);
-	}
+	
 	public int getLevel() {
 		return level;
 	}
@@ -116,7 +131,19 @@ public abstract class Cog {
 	public void setName(String name) {
 		this.name = name;
 	}
+	public void setCurrentHealth(int i) {
+		// TODO Auto-generated method stub
+		this.currentHealth = i;
+	}
 	
+	public int getAccuracy() {
+		return accuracy;
+	}
+
+	public void setAccuracy() {
+		this.accuracy = 80;
+	}
+
 	public static ArrayList<Integer> getLevel1Index() {
 		return Level1Index;
 	}
