@@ -40,6 +40,11 @@ public class Toons {
 	 
 	public Toons(){
 		@SuppressWarnings("resource")
+		Throw cupcake = new Throw("Cupcake", 6, 1, 75, 10);
+		Squirt flower = new Squirt("Squirting Flower", 4, 1, 95, 10);
+		gagBag.put(cupcake, cupcake.getAmount());
+		gagBag.put(flower, cupcake.getAmount());
+		displayGags();
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("Please choose a name");
 		this.setName(scanner.nextLine());
@@ -54,6 +59,36 @@ public class Toons {
 		this.setSquirtEXP(0);
 	}
 	
+	public void displayGags(){
+		for (Map.Entry<Gags, Integer> gagBag : gagBag.entrySet()) {
+		    String key = gagBag.getKey().getName();
+		    Object value = gagBag.getValue();
+		    System.out.println(key + "-" + value);
+		    // ...
+		}
+	}
+	
+	public Gags pickGag(){
+		Gags usedGag = null;
+		System.out.println("Please pick a gag");
+		for (Gags key : gagBag.keySet()) {
+			System.out.println(key.getName() + "-" + gagBag.get(key));
+		}
+		Scanner gagPick = new Scanner(System.in);
+		String userInput = gagPick.nextLine();
+		String formattedInput = userInput.substring(0,1).toUpperCase() + userInput.substring(1).toLowerCase(); 
+		for (Gags key : gagBag.keySet()){
+			if (key.equals(formattedInput)){
+				usedGag = key;
+					}
+				else {
+					pickGag();
+				}
+			}
+		return usedGag;
+		}
+	
+
 	public Map<Gags, Integer> getGagBag() {
 		return gagBag;
 	}
