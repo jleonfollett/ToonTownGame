@@ -48,11 +48,30 @@ public class Toons {
 	Map<Gags, Integer> gagBag = new HashMap<Gags, Integer>();
 	// Mapping all gags to the track
 	Map<gagTrack, ArrayList<Gags>> gagsInTrack = new HashMap<gagTrack, ArrayList<Gags>>();
-	 
+	Map<String, Integer> expByTrack = new HashMap<String, Integer>();
 	Toons(){
 		buildToon();
 		buildGags();
 
+	}
+	public void makeExperience(){
+		this.setThrowEXP(0);
+		this.setSquirtEXP(0);
+		expByTrack.put("THROW", this.throwEXP);
+		expByTrack.put("SQUIRT", this.squirtEXP);
+	}
+	public void setThrowExp(int throwExp){
+		this.throwEXP = throwExp;
+	}
+	public void setSquirtExp(int squirtExp){
+		this.squirtEXP = squirtExp;
+	}	
+	
+	public Map<String, Integer> getExpByTrack() {
+		return expByTrack;
+	}
+	public void setExperienceByTrack(Map<String, Integer> experienceByTrack) {
+		this.expByTrack = experienceByTrack;
 	}
 	public void pickGags(){
 		

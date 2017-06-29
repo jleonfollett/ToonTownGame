@@ -18,7 +18,7 @@ public class Sellbot extends Cog{
 		System.out.println("You have encountered: \n");
 		System.out.println(this.getName());
 		System.out.println(this.getSuit());
-		System.out.println(this.getLevel());
+		System.out.println("Level " + this.getLevel());
 	}
 	
 	public void makeSellbotMap(){
