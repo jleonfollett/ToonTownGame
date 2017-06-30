@@ -4,7 +4,7 @@ public class Squirt extends Gags{
 	int squirtMultiplier = 1;
 	
 	public Squirt(String name, int damage, int level, int accuracy, int amount, int multiplier){
-		setupThrow(name, damage, level, accuracy, amount, multiplier);
+		setupSquirt(name, damage, level, accuracy, amount, multiplier);
 				
 	}
 	
@@ -12,7 +12,7 @@ public class Squirt extends Gags{
 	
 	
 	
-	public void setupThrow(String name, int damage, int level, int accuracy, int amount, int multiplier){
+	public void setupSquirt(String name, int damage, int level, int accuracy, int amount, int multiplier){
 		this.setAmount(amount);
 		this.setName(name);
 		this.setDamage(damage);

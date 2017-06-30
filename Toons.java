@@ -70,15 +70,13 @@ public class Toons {
 	public Map<String, Integer> getExpByTrack() {
 		return expByTrack;
 	}
-	public void setExperienceByTrack(Map<String, Integer> experienceByTrack) {
+	public void setExpByTrack(Map<String, Integer> experienceByTrack) {
 		this.expByTrack = experienceByTrack;
-	}
-	public void pickGags(){
-		
 	}
 	// Gives starting gags
 	public void buildGags(){
 		startingGags();
+		makeExperience();
 		}
 	// Sets basic toon attributes based on user input
 	public void buildToon(){
@@ -86,10 +84,10 @@ public class Toons {
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("Please choose a name");
 		this.setName(scanner.nextLine());
-		System.out.println("Please pick a toon type.");
+		System.out.println("Please pick a toon type.  You can be a monkey, mouse, cat, dog, horse, pig, rabbit, horse, duck, or bear.");
 		String typeString = scanner.nextLine();
 		this.setSpecies(toonType.valueOf(typeString.toUpperCase()));
-		System.out.println("Please pick a color.");
+		System.out.println("Please pick a color.  You can be blue, red, green, yellow, brown, purple, or orange.");
 		String colorString = scanner.nextLine();
 		this.setToonColor(color.valueOf(colorString.toUpperCase()));
 		this.setMaxLaff(15);
@@ -98,17 +96,28 @@ public class Toons {
 	}
 	// Displays gags based on what is held in gagBag
 	public void displayGags(){
-		System.out.println("Your have:");
+		System.out.println("You have:");
 		System.out.println("\n--THROW--");
-		for (Gags gag : throwGags){
-			System.out.println(gag.getName() + "-" + gag.getAmount());
-		}
+		displayThrow();
 		System.out.println("\n--SQUIRT--");
-		for (Gags gag : squirtGags){
-			System.out.println(gag.getName() + "-" + gag.getAmount());
-		}
+		displaySquirt();
 		
 	}
+	public void displayThrow(){
+		int i = 1;
+		for (Gags gag : throwGags){
+			System.out.println(i + " : " + gag.getName() + "-" + gag.getAmount() + " remaining.\n");
+		}
+	}
+	
+	public void displaySquirt(){
+		int i = 1;
+		for (Gags gag : squirtGags){
+			
+			System.out.println(i + " : " + gag.getName() + "-" + gag.getAmount() + " remaining.\n");
+		}
+	}
+	
 	// Adds default gags (Cupcake and flower)
 	public void startingGags(){
 		Throw cupcake   =   new Throw("Cupcake", 6, 1, 75, 10, 1);
@@ -122,17 +131,39 @@ public class Toons {
 		}
 	// Has toon pick a gag and returns it
 	public Gags pickGag(){
-		displayGags();
-		Gags usedGag = null;
-		System.out.println("Please pick a gag");
+		int userInput;
 		@SuppressWarnings("resource")
 		Scanner gagPick       =    new Scanner(System.in);
-		String userInput      =    gagPick.nextLine();
-		String formattedInput =    userInput.substring(0,1).toUpperCase() + userInput.substring(1).toLowerCase(); 
-		usedGag = matchGag(formattedInput);
+		displayGags();
+		Gags usedGag = null;
+		gagTrack selected = pickTrack();
+		if (selected == gagTrack.THROW){
+			System.out.println("Please pick a throw gag");
+			displayThrow();
+			userInput = gagPick.nextInt();
+			usedGag = this.getThrowGags().get(userInput-1);
+		}
+		else if (selected == gagTrack.SQUIRT){
+			System.out.println("Please pick a squirt gag");
+			displaySquirt();
+			userInput = gagPick.nextInt();
+			usedGag = this.getSquirtGags().get(userInput-1);
+		}
 		return usedGag;
 		}
 	
+	public ArrayList<Gags> getThrowGags() {
+		return throwGags;
+	}
+	public void setThrowGags(ArrayList<Gags> throwGags) {
+		this.throwGags = throwGags;
+	}
+	public ArrayList<Gags> getSquirtGags() {
+		return squirtGags;
+	}
+	public void setSquirtGags(ArrayList<Gags> squirtGags) {
+		this.squirtGags = squirtGags;
+	}
 	// Setters and getters
 	public Map<Gags, Integer> getGagBag() {
 		return gagBag;
@@ -193,8 +224,23 @@ public class Toons {
 	public toonType getSpecies() {
 		return species;
 	}
-	
-	public Gags matchGag(String input){
+	public gagTrack pickTrack(){
+		System.out.println("Please enter a number corresponding to the track. \n" +
+							"1 - Throw\n" +
+							"2 - Squirt"
+							);
+		Scanner gagPick       =    new Scanner(System.in);
+		int track = gagPick.nextInt();
+		gagTrack selectedTrack = null;
+		if (track == 1){
+			selectedTrack = gagTrack.THROW;
+		}
+		else if (track == 2){
+		selectedTrack = gagTrack.SQUIRT;
+	}
+		return selectedTrack;
+	}
+	public Gags matchGag(int input){
 		Gags matchedGag = null;
 		for (Gags gag : throwGags){
 				if (gag.getName().equals(input)){
